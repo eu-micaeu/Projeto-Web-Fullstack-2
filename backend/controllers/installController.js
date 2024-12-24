@@ -8,14 +8,12 @@ exports.install = async (req, res) => {
         await sequalize.sync({ force: true });
 
         await User.bulkCreate([
-            { username: 'joaoRefrigeracao', password: 'frioGelado123', role: 'user' },
-            { username: 'mariaLavagem', password: 'limpezaTotal', role: 'user' },
-            { username: 'carlosCozinha', password: 'chefDeCasa', role: 'user' },
-            { username: 'anaTvSom', password: 'cinemaEmCasa', role: 'user' },
-            { username: 'pedroEletro', password: 'energiaTotal', role: 'user' }
+
+            { username: 'teste', password: 'testesenha123', role: 'admin' },
+
         ]);
 
-        res.status(201).json({ message: 'Banco de dados criado e usuário administrador inserido!' });
+        res.status(201).json({ message: 'Banco de dados criado!' });
 
     } catch (error) {
 
