@@ -1,5 +1,6 @@
 const sequalize = require('../config/database');
 const User = require('../models/User');
+const Car = require('../models/Car');
 
 exports.install = async (req, res) => {
 
@@ -12,6 +13,16 @@ exports.install = async (req, res) => {
             { username: 'teste', password: 'testesenha123', role: 'admin' },
 
         ]);
+
+        await Car.bulkCreate([
+
+            { brand: 'Nissan', model: 'Skyline GT-R', year: 1999, color: 'Azul' },
+        
+            { brand: 'Toyota', model: 'Supra', year: 1998, color: 'Branco' },
+        
+            { brand: 'Mazda', model: 'RX-7', year: 2002, color: 'Preto' },
+        
+        ]);        
 
         res.status(201).json({ message: 'Banco de dados criado!' });
 

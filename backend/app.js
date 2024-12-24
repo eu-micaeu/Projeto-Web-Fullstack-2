@@ -1,5 +1,6 @@
 const express = require('express');
 const userRoutes = require('./routes/userRoutes');
+const carRoutes = require('./routes/carRoutes');
 const installRoutes = require('./routes/installRoutes');
 const dotenv = require('dotenv');
 
@@ -10,6 +11,8 @@ const app = express(); // Inicializa o servidor
 app.use(express.json()); // Permite o uso de JSON nas requisições
 
 app.use('/api/users', userRoutes); // Rota para usuários
+
+app.use('/api/cars', carRoutes); // Rota para carros
 
 app.use('/api', installRoutes); // Rota para instalação
 
