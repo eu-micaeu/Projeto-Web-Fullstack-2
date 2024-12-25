@@ -6,7 +6,22 @@ function Header() {
 
         <header>
 
-            <h1>JDM's</h1>
+            <h1>BaskZone</h1>
+
+            <nav>
+
+                <ul>
+
+                    <li>
+                        
+                        <a>Login</a>
+                        
+                    </li>
+
+                </ul>
+
+            </nav>
+
 
         </header>
 

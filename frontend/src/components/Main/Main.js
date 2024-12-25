@@ -3,19 +3,19 @@ import './Main.css';
 
 function Main() {
 
-    const [cars, setCars] = useState([]); 
+    const [teams, setTeams] = useState([]); 
 
     const [error, setError] = useState(null); 
 
     useEffect(() => {
 
-        fetch('http://localhost:3000/api/cars/listCars')
+        fetch('http://localhost:3000/api/teams/readTeams') 
 
             .then(response => {
 
                 if (!response.ok) {
 
-                    throw new Error('Erro ao buscar os carros');
+                    throw new Error('Erro ao buscar os times');
 
                 }
 
@@ -23,7 +23,7 @@ function Main() {
 
             })
 
-            .then(data => setCars(data)) 
+            .then(data => setTeams(data.teams)) 
 
             .catch(error => setError(error.message)); 
 
@@ -33,31 +33,43 @@ function Main() {
 
         <main>
 
-            <h1>Home</h1>
+            <h2>Times Históricos do Basquete!</h2>
 
             {error && <p>{error}</p>} 
 
-            <ul>
+            <div className="teams-container">
 
-                {cars.length > 0 ? (
+                {teams.length > 0 ? (
 
-                    cars.map((car) => (
+                    teams.map((team) => (
 
-                        <li key={car.car_id}>
+                        <div key={team.team_id} className="team-card">
 
-                            {car.brand} - {car.model}
+                            <h2>{team.name}</h2>
 
-                        </li>
+                            <p><strong>Cidade:</strong> {team.city}</p>
+
+                            <p><strong>Fundação:</strong> {team.foundation_date}</p>
+
+                            <p><strong>Campeonatos Ganhos:</strong> {team.championships_won}</p>
+
+                            <p><strong>Treinador:</strong> {team.coach_name}</p>
+
+                            <p><strong>Número de Jogadores:</strong> {team.players_count}</p>
+
+                            <p><strong>Ativo:</strong> {team.is_active ? 'Sim' : 'Não'}</p>
+
+                        </div>
 
                     ))
 
                 ) : (
 
-                    <p>Carregando carros...</p>
+                    <p>Carregando times...</p>
 
                 )}
 
-            </ul>
+            </div>
 
         </main>
 

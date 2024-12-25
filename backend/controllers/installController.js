@@ -1,6 +1,6 @@
 const sequalize = require('../config/database');
 const User = require('../models/User');
-const Car = require('../models/Car');
+const Team = require('../models/Team');
 
 exports.install = async (req, res) => {
 
@@ -14,16 +14,27 @@ exports.install = async (req, res) => {
 
         ]);
 
-        await Car.bulkCreate([
-
-            { brand: 'Nissan', model: 'Skyline GT-R', year: 1999, color: 'Azul' },
-        
-            { brand: 'Toyota', model: 'Supra', year: 1998, color: 'Branco' },
-        
-            { brand: 'Mazda', model: 'RX-7', year: 2002, color: 'Preto' },
-        
-        ]);        
-
+        await Team.bulkCreate([
+            {
+              name: 'Los Angeles Lakers',
+              city: 'Los Angeles',
+              foundation_date: '1947-11-01',
+              championships_won: 17,
+              players_count: 15,
+              coach_name: 'Darvin Ham',
+              is_active: true
+            },
+            {
+              name: 'Golden State Warriors',
+              city: 'San Francisco',
+              foundation_date: '1946-01-01',
+              championships_won: 7,
+              players_count: 15,
+              coach_name: 'Steve Kerr',
+              is_active: true
+            },
+          ]);          
+            
         res.status(201).json({ message: 'Banco de dados criado!' });
 
     } catch (error) {

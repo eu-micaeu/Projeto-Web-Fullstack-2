@@ -1,14 +1,51 @@
 header {
+
     display: flex;
     justify-content: space-between; 
     align-items: center;
-    padding: 10px 20px;
-    color: white;
+    padding: 10px 0;
     font-weight: bold;
-    border-bottom: 5px solid #f10000;
+    border-bottom: 5px solid #F24822;
+
 }
 
 header h1 {
-    color: #f10000;
+
+    color: #F24822;
     font-size: 1.5rem;
+
+}
+
+header nav{
+
+    display: flex;
+    gap: 10px;
+
+}
+
+header nav ul {
+
+    display: flex;
+    gap: 10px;
+    list-style: none;
+
+}
+
+header nav ul li {
+
+    background-color: #F24822;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+
+}
+
+header nav ul li a {
+
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+
 }
