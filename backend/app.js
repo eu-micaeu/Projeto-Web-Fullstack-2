@@ -3,10 +3,13 @@ const userRoutes = require('./routes/userRoutes');
 const carRoutes = require('./routes/carRoutes');
 const installRoutes = require('./routes/installRoutes');
 const dotenv = require('dotenv');
+const cors = require('cors');
 
 dotenv.config();
 
 const app = express(); // Inicializa o servidor
+
+app.use(cors()); // Permite o uso de CORS
 
 app.use(express.json()); // Permite o uso de JSON nas requisições
 

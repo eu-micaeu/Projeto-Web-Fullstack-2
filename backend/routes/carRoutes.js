@@ -5,6 +5,6 @@ const authenticate = require('../middlewares/authenticate');
 
 router.post('/registerCar', authenticate, carController.registerCar);
 
-router.get('/listCars', authenticate, carController.listCars);
+router.get('/listCars', carController.listCars);
 
 module.exports = router;

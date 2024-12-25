@@ -1,5 +1,6 @@
 import './App.css';
 import Header from './components/Header/Header';
+import Main from './components/Main/Main';
 import { Container } from '@mui/material'; 
 
 function App() {
@@ -17,6 +18,8 @@ function App() {
       }}> 
 
         <Header />
+
+        <Main />
 
       </Container>
 

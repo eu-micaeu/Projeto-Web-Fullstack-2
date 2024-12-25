@@ -6,7 +6,7 @@ function Header() {
 
         <header>
 
-            <h1>JDMs</h1>
+            <h1>JDM's</h1>
 
         </header>
 
