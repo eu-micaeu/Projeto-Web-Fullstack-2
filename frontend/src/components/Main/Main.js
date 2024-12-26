@@ -35,6 +35,8 @@ function Main() {
 
             <h2>Times Históricos do Basquete!</h2>
 
+            <p>Conhece mais algum? Faça o Login no nosso site e adicione ele!</p>
+
             {error && <p>{error}</p>} 
 
             <div className="teams-container">

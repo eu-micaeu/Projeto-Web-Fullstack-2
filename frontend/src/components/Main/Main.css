@@ -6,7 +6,6 @@ main {
     background-color: #f8f9fa;
     border-radius: 8px;
     padding: 20px 0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
@@ -57,7 +56,7 @@ p {
 }
 
 .team-card {
-    border-radius: 10px;
+    border-radius: 5px;
     border: 2px solid #F24822;
     padding: 20px;
     width: 250px;
