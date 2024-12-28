@@ -6,7 +6,7 @@ function Header() {
 
         <header>
 
-            <h1>BaskZone</h1>
+            <h1>zoneBask</h1>
 
             <nav>
 
