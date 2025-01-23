@@ -16,18 +16,6 @@ const sequelize = new Sequelize(
     host: process.env.DB_HOST, // Host
 
     dialect: 'postgres', // Dialeto
-
-    dialectOptions: {
-
-      ssl: {
-
-        require: true, // Exigir SSL
-
-        rejectUnauthorized: false // Aceitar certificados não verificados (caso seja um ambiente de desenvolvimento)
-
-      }
-
-    }
     
   }
 
