@@ -1,87 +1,86 @@
-import './Header.css';
-import { Dialog } from '@mui/material';
-import { useState } from 'react';
+import React, { useState } from "react";
+import "./Header.css";
+import { Dialog } from "@mui/material"; // Certifique-se de instalar o MUI
 
-function Header() {
+const Header = () => {
+  const [openLogin, setOpenLogin] = useState(false);
+  const [openRegister, setOpenRegister] = useState(false);
 
-    const [openLogin, setOpenLogin] = useState(false);
-    const [openRegister, setOpenRegister] = useState(false);
+  return (
+    <header>
+      <h1>zoneBask</h1>
 
-    return (
+      <nav>
+        <ul>
+          <li>
+            <button onClick={() => setOpenLogin(true)}>Login</button>
+          </li>
+        </ul>
+      </nav>
 
-        <header>
+      {/* Pop-Up de Login */}
+      <Dialog
+        open={openLogin}
+        onClose={() => setOpenLogin(false)}
+        className="login-dialog"
+      >
+        <div className="dialog-container">
+          <h1>Login</h1>
+          <h2>Seja bem-vindo ao zoneBask!</h2>
+          <form>
+            <label htmlFor="username">Nome de usuário:</label>
+            <input type="text" id="username" name="username" />
 
-            <h1>zoneBask</h1>
+            <label htmlFor="password">Senha:</label>
+            <input type="password" id="password" name="password" />
 
-            <nav>
+            <button type="submit">Entrar</button>
+          </form>
 
-                <ul>
+          <button
+            className="switch-button"
+            onClick={() => {
+              setOpenLogin(false);
+              setOpenRegister(true);
+            }}
+          >
+            Realizar cadastro
+          </button>
+        </div>
+      </Dialog>
 
-                    <li>
+      {/* Pop-Up de Register */}
+      <Dialog
+        open={openRegister}
+        onClose={() => setOpenRegister(false)}
+        className="register-dialog"
+      >
+        <div className="dialog-container">
+          <h1>Register</h1>
+          <h2>Seja bem-vindo ao zoneBask!</h2>
+          <form>
+            <label htmlFor="username">Nome de usuário:</label>
+            <input type="text" id="username" name="username" />
 
-                        <button onClick={() => setOpenLogin(true)}>Login</button>
+            <label htmlFor="password">Senha:</label>
+            <input type="password" id="password" name="password" />
 
-                    </li>
+            <button type="submit">Cadastrar</button>
+          </form>
 
-                </ul>
-
-            </nav>
-
-            <Dialog open={openLogin} onClose={() => setOpenLogin(false)}>
-
-                <h1>Login</h1>
-
-                <h2>Seja bem-vindo ao zoneBask!</h2>
-
-                <form>
-
-                    <label htmlFor="username">Nome de usuário:</label>
-
-                    <input type="text" id="username" name="username" />
-
-                    <label htmlFor="password">Senha:</label>
-
-                    <input type="password" id="password" name="password" />
-
-                </form>
-
-                <button onClick={() => {
-                    setOpenLogin(false);
-                    setOpenRegister(true);
-                }}>Realizar cadastro</button>
-
-            </Dialog>
-
-            {/* Pop-Up de Register */}
-            <Dialog open={openRegister} onClose={() => setOpenRegister(false)}>
-
-                <h1>Register</h1>
-
-                <h2>Seja bem-vindo ao zoneBask!</h2>
-
-                <form>
-
-                    <label htmlFor="username">Nome de usuário:</label>
-
-                    <input type="text" id="username" name="username" />
-
-                    <label htmlFor="password">Senha:</label>
-
-                    <input type="password" id="password" name="password" />
-
-                </form>
-
-                <button onClick={() => {
-                    setOpenRegister(false);
-                    setOpenLogin(true);
-                }}>Voltar para login</button>
-
-            </Dialog>
-
-        </header>
-
-    )
-
-}
+          <button
+            className="switch-button"
+            onClick={() => {
+              setOpenRegister(false);
+              setOpenLogin(true);
+            }}
+          >
+            Voltar para login
+          </button>
+        </div>
+      </Dialog>
+    </header>
+  );
+};
 
 export default Header;
