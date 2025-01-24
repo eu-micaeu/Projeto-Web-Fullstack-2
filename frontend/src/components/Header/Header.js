@@ -1,32 +1,86 @@
-import './Header.css';
+import React, { useState } from "react";
+import "./Header.css";
+import { Dialog } from "@mui/material"; // Certifique-se de instalar o MUI
 
-function Header() {
+const Header = () => {
+  const [openLogin, setOpenLogin] = useState(false);
+  const [openRegister, setOpenRegister] = useState(false);
 
-    return (
+  return (
+    <header>
+      <h1>zoneBask</h1>
 
-        <header>
+      <nav>
+        <ul>
+          <li>
+            <button onClick={() => setOpenLogin(true)}>Login</button>
+          </li>
+        </ul>
+      </nav>
 
-            <h1>zoneBask</h1>
+      {/* Pop-Up de Login */}
+      <Dialog
+        open={openLogin}
+        onClose={() => setOpenLogin(false)}
+        className="login-dialog"
+      >
+        <div className="dialog-container">
+          <h1>Login</h1>
+          <h2>Seja bem-vindo ao zoneBask!</h2>
+          <form>
+            <label htmlFor="username">Nome de usuário:</label>
+            <input type="text" id="username" name="username" />
 
-            <nav>
+            <label htmlFor="password">Senha:</label>
+            <input type="password" id="password" name="password" />
 
-                <ul>
+            <button type="submit">Entrar</button>
+          </form>
 
-                    <li>
-                        
-                        <a>Login</a>
-                        
-                    </li>
+          <button
+            className="switch-button"
+            onClick={() => {
+              setOpenLogin(false);
+              setOpenRegister(true);
+            }}
+          >
+            Realizar cadastro
+          </button>
+        </div>
+      </Dialog>
 
-                </ul>
+      {/* Pop-Up de Register */}
+      <Dialog
+        open={openRegister}
+        onClose={() => setOpenRegister(false)}
+        className="register-dialog"
+      >
+        <div className="dialog-container">
+          <h1>Register</h1>
+          <h2>Seja bem-vindo ao zoneBask!</h2>
+          <form>
+            <label htmlFor="username">Nome de usuário:</label>
+            <input type="text" id="username" name="username" />
 
-            </nav>
+            <label htmlFor="password">Senha:</label>
+            <input type="password" id="password" name="password" />
 
+            <button type="submit">Cadastrar</button>
+          </form>
 
-        </header>
-
-    )
-
-}
+          <button
+            className="switch-button"
+            onClick={() => {
+              setOpenRegister(false);
+              setOpenLogin(true);
+            }}
+          >
+            Voltar para login
+          </button>
+        </div>
+      </Dialog>
+    </header>
+  );
+};
 
 export default Header;

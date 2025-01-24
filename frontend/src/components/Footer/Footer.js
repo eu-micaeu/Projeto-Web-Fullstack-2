@@ -6,7 +6,7 @@ function Footer() {
 
         <footer>
 
-            <p>BaskZone - Todos os direitos reservados</p>
+            <p>zoneBask - Todos os direitos reservados</p>
 
         </footer>
 
