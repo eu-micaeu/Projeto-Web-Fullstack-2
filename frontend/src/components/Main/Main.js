@@ -59,24 +59,27 @@ function Main() {
       <h2>Times Históricos do Basquete!</h2>
 
       {!isAuthTokenValid() && (
-
         <p>Conhece mais algum? Faça o Login no nosso site e adicione ele!</p>
-
       )}
 
       {isAuthTokenValid() && (
-        <div className='search-team-form'>
+        <div className="search-team-form">
           <form onSubmit={handleSearch}>
             <label htmlFor="name">Buscar Time:</label>
             <input
               type="text"
               id="name"
               name="name"
+              placeholder="Digite o nome do time..."
               value={searchName}
               onChange={(e) => setSearchName(e.target.value)}
               required
             />
-            <Button variant="contained" color="primary" type="submit">
+            <Button
+              variant="contained"
+              type="submit"
+              className="submit-button"
+            >
               Buscar
             </Button>
           </form>
@@ -124,7 +127,9 @@ function Main() {
           <div className="team-card add-team-card">
             <h2>Adicionar Time</h2>
             <p>Conhece um time que não está na lista? Adicione ele!</p>
-            <button>Adicionar Time</button>
+            <Button variant="contained" color="secondary">
+              Adicionar Time
+            </Button>
           </div>
         )}
       </div>

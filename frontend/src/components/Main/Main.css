@@ -55,56 +55,64 @@ p {
     margin: 10px 0;
     border-radius: 5px;
     font-weight: bold;
-  }
-  
-
-.search-team-form {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
 }
 
-.search-team-form form{
 
+.search-team-form {
     display: flex;
     justify-content: center;
-    flex-direction: row;
-    gap: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+}
 
+.search-team-form form {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
 }
 
 .search-team-form label {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
 }
 
 .search-team-form input {
-    width: 100%;
-    padding: 10px 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    height: 20px;
-}
-
-.search-team-form button {
-    border: none;
-    border-radius: 5px;
-    background-color: #F24822;
-    color: #fff;
+    flex: 1;
+    padding: 10px 15px;
     font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-team-form input:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.4);
+    outline: none;
+}
+
+.submit-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #4caf50 !important;
+    color: #fff;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.search-team-form button:hover {
-    background-color: #333;
+.submit-button:hover {
+    background-color: #388e3c !important;
+    transform: scale(1.05);
 }
 
-.searched-team{
+.searched-team {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -136,7 +144,7 @@ p {
     transition: transform 0.3s ease;
 }
 
-.team-card:hover{
+.team-card:hover {
     transform: translateY(-5px);
 }
 
