@@ -12,13 +12,20 @@ const Header = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
+
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    if (!username || !password) {
+      setError("Preencha todos os campos.");
+      return;
+    }
 
     const credentials = { username, password };
 
     try {
-      const response = await fetch("http://localhost:3000/api/users/login", {
+      const response = await fetch(`${API_BASE_URL}/api/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,25 +52,61 @@ const Header = () => {
     }
   };
 
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    if (!username || !password) {
+      setError("Preencha todos os campos.");
+      return;
+    }
+
+    const credentials = { username, password };
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/users/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      if (!response.ok) {
+        throw new Error("Falha ao registrar usuário");
+      }
+
+      console.log("Usuário registrado com sucesso");
+
+      // Recarregar a página para atualizar
+      window.location.reload();
+
+      // Fechar o diálogo de registro após sucesso
+      setOpenRegister(false);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   return (
     <header>
       <h1>zoneBask</h1>
       <nav>
         <ul>
-
           <li>
+            {isAuthTokenValid() && (
+              <button onClick={() => {
+                removeAuthTokenFromCookies();
+                window.location.reload();
+              }}>
+                Logout
+              </button>
+            )}
 
-            {isAuthTokenValid() && <button onClick={() => {
-              removeAuthTokenFromCookies();
-              window.location.reload();
-            }}>Logout</button>}
-
-            {!isAuthTokenValid() && <button onClick={() => setOpenLogin(true)}>Login</button>}
-            
+            {!isAuthTokenValid() && (
+              <button onClick={() => setOpenLogin(true)}>Login</button>
+            )}
           </li>
-
         </ul>
-
       </nav>
 
       {/* Pop-Up de Login */}
@@ -120,12 +163,26 @@ const Header = () => {
         <div className="dialog-container">
           <h1>Register</h1>
           <h2>Seja bem-vindo ao zoneBask!</h2>
-          <form>
+          <form onSubmit={handleRegister}>
             <label htmlFor="username">Nome de usuário:</label>
-            <input type="text" id="username" name="username" />
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
 
             <label htmlFor="password">Senha:</label>
-            <input type="password" id="password" name="password" />
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            {error && <p className="error">{error}</p>}
 
             <button type="submit">Cadastrar</button>
           </form>
@@ -141,7 +198,7 @@ const Header = () => {
           </button>
         </div>
       </Dialog>
-    </header >
+    </header>
   );
 };
 

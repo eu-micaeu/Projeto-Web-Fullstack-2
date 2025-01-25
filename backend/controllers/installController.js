@@ -1,5 +1,4 @@
 const sequalize = require('../config/database');
-const User = require('../models/User');
 const Team = require('../models/Team');
 
 exports.install = async (req, res) => {
@@ -7,12 +6,6 @@ exports.install = async (req, res) => {
     try {
 
         await sequalize.sync({ force: true });
-
-        await User.bulkCreate([
-
-            { username: 'teste', password: 'testesenha123', role: 'admin' },
-
-        ]);
 
         await Team.bulkCreate([
             // Times da NBA

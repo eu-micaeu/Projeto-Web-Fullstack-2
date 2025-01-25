@@ -5,9 +5,9 @@ exports.createTeam = async (req, res) => {
 
   try {
 
-    const { name, description } = req.body;
+    const { name, city, foundation_date, championships_won,  players_count, coach_name,  is_active} = req.body;
 
-    const team = await Team.create({ name, description });
+    const team = await Team.create({ name, city, foundation_date, championships_won, players_count, coach_name, is_active });
 
     res.status(201).json({ team, message: 'Time criado com sucesso' });
 
