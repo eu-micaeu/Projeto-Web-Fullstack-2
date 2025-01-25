@@ -1,130 +1,139 @@
 header {
 
-    display: flex;
-    justify-content: space-between; 
-    align-items: center;
-    padding: 10px 0;
-    font-weight: bold;
-    border-bottom: 5px solid #F24822;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  font-weight: bold;
+  border-bottom: 5px solid #F24822;
 
 }
 
 header h1 {
 
-    color: #F24822;
-    font-size: 1.5rem;
+  color: #F24822;
+  font-size: 1.5rem;
 
 }
 
-header nav{
+header nav {
 
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 
 }
 
 header nav ul {
 
-    display: flex;
-    gap: 10px;
-    list-style: none;
+  display: flex;
+  gap: 10px;
+  list-style: none;
 
 }
 
 header nav ul li {
 
-    background-color: #F24822;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+  background-color: #F24822;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 
 }
 
 header nav ul li a {
 
-    text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 5px;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 5px;
 
 }
+
 header nav ul li button {
-    background-color: #F24822;
-  }
+
+  background-color: #F24822;
+  border: none;
+  color: white;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+
+}
+
 /* Estilo do Dialog */
 .dialog-container {
-    padding: 30px 20px;
-    background-color: white;
-    text-align: center;
-  }
-  
-  .dialog-container h1 {
-    color: #f24822;
-    margin-bottom: 10px;
-  }
-  
-  .dialog-container h2 {
-    color: #555;
-    margin-bottom: 20px;
-  }
-  
-  .dialog-container label {
-    display: block;
-    color: #555;
-    margin-top: 10px;
-    text-align: left;
-    font-weight: bold;
-  }
-  
-  .dialog-container input {
-    width: 80%; 
-    max-width: 300px;
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-  }
-  
-  .dialog-container button {
-    background-color: #f24822;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 15px;
-  }
-  
+  padding: 30px 20px;
+  background-color: white;
+  text-align: center;
+}
 
-  
-  .dialog-container .switch-button {
-    background-color: transparent;
-    color: #f24822;
-    border: none;
-    margin-top: 10px;
-    cursor: pointer;
-  }
-  
-  .dialog-container .switch-button:hover {
-    text-decoration: underline;
-  }
-  
+.dialog-container h1 {
+  color: #f24822;
+  margin-bottom: 10px;
+}
+
+.dialog-container h2 {
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.dialog-container label {
+  display: block;
+  color: #555;
+  margin-top: 10px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.dialog-container input {
+  width: 80%;
+  max-width: 300px;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.dialog-container button {
+  background-color: #f24822;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.dialog-container .switch-button {
+  background-color: transparent;
+  color: #f24822;
+  border: none;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.dialog-container .switch-button:hover {
+  text-decoration: underline;
+}
+
 /* Estilo geral do Dialog */
 .login-dialog .MuiPaper-root,
 .register-dialog .MuiPaper-root {
-  width: 400px; 
+  width: 400px;
   height: 475px;
-  max-width: 90%; 
-  overflow: hidden; 
+  max-width: 90%;
+  overflow: hidden;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px; 
+  padding: 20px;
 }
 
 /* Centraliza o conteúdo do Dialog (formulário) */
@@ -135,29 +144,29 @@ header nav ul li button {
   align-items: center;
   width: 100%;
   height: 100%;
-  padding: 0; 
+  padding: 0;
 }
 
 /* Estilo dos campos do formulário */
 .dialog-container form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; 
-    align-items: center;
-    width: 100%; 
-  }
-  
-  /* Estilo dos inputs dentro do Dialog */
-  .dialog-container input {
-    width: 200px; 
-    padding: 6px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  /* Estilo dos labels dentro do Dialog */
-  .dialog-container label {
-    font-size: 14px;
-    margin-bottom: 5px;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  width: 100%;
+}
+
+/* Estilo dos inputs dentro do Dialog */
+.dialog-container input {
+  width: 200px;
+  padding: 6px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Estilo dos labels dentro do Dialog */
+.dialog-container label {
+  font-size: 14px;
+  margin-bottom: 5px;
+}

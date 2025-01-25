@@ -34,14 +34,6 @@ User.init({
 
     },
 
-    role: { // Coluna de cargo
-
-      type: DataTypes.STRING,
-
-      allowNull: false,
-
-    },
-
 }, {
 
     sequelize, // Conexão com o banco de dados

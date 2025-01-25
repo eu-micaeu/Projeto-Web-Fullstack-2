@@ -35,3 +35,28 @@ exports.readTeams = async (req, res) => {
   }
 
 };
+
+// Função para pesquisar um time pelo nome
+exports.readTeamByName = async (req, res) => {
+
+  try {
+
+    const { name } = req.params;
+
+    const team = await Team.findOne({ where: { name } });
+
+    if (!team) {
+
+      return res.status(404).json({ error: 'Time não encontrado' });
+
+    }
+
+    res.status(200).json({ team });
+
+  } catch (error) {
+
+    res.status(500).json({ error: error.message });
+
+  }
+  
+};
