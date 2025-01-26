@@ -21,8 +21,12 @@ User.init({
       type: DataTypes.STRING,
 
       allowNull: false,
-
-      unique: true,
+      unique: {
+        msg: 'Já existe um username com esse nome.' 
+      },
+      validate: {
+        notEmpty: { msg: 'O nome do username é obrigatório.' },
+      }
 
     },
 
@@ -31,6 +35,14 @@ User.init({
       type: DataTypes.STRING,
 
       allowNull: false,
+
+      validate: {
+        notEmpty: { msg: 'A senha é obrigatória.' },
+        len: {
+          args: [8, 20], 
+          msg: 'A senha deve ter pelo menos 8 caracteres.'
+        }
+      }
 
     },
 
