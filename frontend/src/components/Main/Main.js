@@ -74,7 +74,6 @@ function Main() {
   const handleAddTeam = (e) => {
     e.preventDefault();
     setError(null);
-
     const token = getAuthTokenFromCookies();
     fetch('http://localhost:3000/api/teams/createTeam', {
       method: 'POST',

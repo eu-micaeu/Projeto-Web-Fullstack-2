@@ -16,14 +16,11 @@ const Header = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     if (!username || !password) {
       setError("Preencha todos os campos.");
       return;
     }
-
     const credentials = { username, password };
-
     try {
       const response = await fetch(`${API_BASE_URL}/api/users/login`, {
         method: "POST",
@@ -32,20 +29,12 @@ const Header = () => {
         },
         body: JSON.stringify(credentials),
       });
-
       if (!response.ok) {
         throw new Error("Falha ao fazer login");
       }
-
       const data = await response.json();
-
-      // Salvar o token de autenticação nos cookies
       Cookies.set('authToken', data.token, { expires: 1 });
-
-      // Recarregar a página para atualizar
       window.location.reload();
-
-      // Fechar o diálogo de login após sucesso
       setOpenLogin(false);
     } catch (error) {
       setError(error.message);
@@ -54,14 +43,11 @@ const Header = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
     if (!username || !password) {
       setError("Preencha todos os campos.");
       return;
     }
-
     const credentials = { username, password };
-
     try {
       const response = await fetch(`${API_BASE_URL}/api/users/register`, {
         method: "POST",
