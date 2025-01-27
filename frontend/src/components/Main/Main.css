@@ -73,6 +73,7 @@ p {
     gap: 15px;
     width: 100%;
     max-width: 600px;
+    height: 60px;
 }
 
 .search-team-form label {
@@ -83,11 +84,12 @@ p {
 
 .search-team-form input {
     flex: 1;
-    padding: 10px 15px;
+    padding: 15px 15px;
     font-size: 1rem;
     border: 1px solid #ddd;
     border-radius: 5px;
     transition: border-color 0.3s, box-shadow 0.3s;
+    height: 100%;
 }
 
 .search-team-form input:focus {
@@ -96,19 +98,18 @@ p {
     outline: none;
 }
 
-.submit-button {
-    padding: 10px 20px;
-    font-size: 1rem;
+.search-team-form .submit-button {
+    padding: 12px 20px;
     font-weight: bold;
-    background-color: #4caf50 !important;
+    background-color: #F24822 !important;
     color: #fff;
     border-radius: 5px;
     transition: background-color 0.3s, transform 0.2s;
     cursor: pointer;
+
 }
 
-.submit-button:hover {
-    background-color: #388e3c !important;
+.search-team-form .submit-button:hover {
     transform: scale(1.05);
 }
 
@@ -130,8 +131,9 @@ p {
 .teams-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+    gap: 10px;
+    justify-content: space-between;
+    width: 80%;
 }
 
 .team-card {
@@ -164,4 +166,24 @@ p {
 .team-card p {
     margin: 5px 0;
     font-size: 1em;
+}
+
+.MuiPaper-root {
+    background-color: #f8f9fa;
+    width: 400px;
+}
+
+.MuiDialogContent-root {
+    padding: 0px 20px 20px 20px;
+    border: 2px solid #F24822;
+}
+
+.MuiDialogContent-root p{
+
+    font-size: 1.2rem;
+    border: 2px solid #F24822;
+    padding: 10px 7px;
+    margin: 0;
+    border-radius: 5px;
+
 }

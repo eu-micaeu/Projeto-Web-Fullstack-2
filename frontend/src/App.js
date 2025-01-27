@@ -1,32 +1,22 @@
 import Header from './components/Header/Header';
 import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
-import { Container } from '@mui/material'; 
 
 function App() {
 
   return (
-    
-      <Container 
+    <>
 
-      style={{
+      <Header />
 
-        userSelect: 'none',
-        display: 'flex',
-        flexDirection: 'column',
+      <Main />
 
-      }}> 
+      <Footer />
 
-        <Header />
-
-        <Main />
-
-        <Footer />
-
-      </Container>
+    </>
 
   );
-  
+
 }
 
 export default App;

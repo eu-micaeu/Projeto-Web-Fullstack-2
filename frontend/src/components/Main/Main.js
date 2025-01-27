@@ -16,6 +16,8 @@ function Main() {
   const [searchName, setSearchName] = useState('');
   const [searchedTeam, setSearchedTeam] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+  const [openTeamModal, setOpenTeamModal] = useState(false);
+  const [selectedTeam, setSelectedTeam] = useState(null);
   const [newTeam, setNewTeam] = useState({
     name: '',
     city: '',
@@ -41,6 +43,12 @@ function Main() {
   const handleSearch = (e) => {
     e.preventDefault();
     setError(null);
+
+    if (!searchName.trim()) {
+      setSearchedTeam(null); 
+      return; 
+    }
+
     const token = getAuthTokenFromCookies();
     fetch(`http://localhost:3000/api/teams/readTeamByName/${searchName}`, {
       method: 'GET',
@@ -65,6 +73,8 @@ function Main() {
   };
 
   const toggleModal = () => setOpenModal(!openModal);
+
+  const toggleTeamModal = () => setOpenTeamModal(!openTeamModal);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -96,6 +106,11 @@ function Main() {
       .catch(error => setError(error.message));
   };
 
+  const handleTeamClick = (team) => {
+    setSelectedTeam(team);
+    toggleTeamModal();
+  };
+
   return (
     <main>
       <h2>Times Históricos do Basquete!</h2>
@@ -116,7 +131,7 @@ function Main() {
               fullWidth
               margin="normal"
             />
-            <Button variant="contained" type="submit">
+            <Button variant="contained" type="submit" className='submit-button'>
               Buscar
             </Button>
           </form>
@@ -145,30 +160,54 @@ function Main() {
       <div className="teams-container">
         {teams.length > 0 ? (
           teams.map((team) => (
-            <div key={team.team_id} className="team-card">
-              <h2>{team.name}</h2>
-              <p><strong>Cidade:</strong> {team.city}</p>
-              <p><strong>Fundação:</strong> {team.foundation_date}</p>
-              <p><strong>Campeonatos Ganhos:</strong> {team.championships_won}</p>
-              <p><strong>Treinador:</strong> {team.coach_name}</p>
-              <p><strong>Número de Jogadores:</strong> {team.players_count}</p>
-              <p><strong>Ativo:</strong> {team.is_active ? 'Sim' : 'Não'}</p>
+            <div key={team.team_id} className="team-card" onClick={() => handleTeamClick(team)}>
+              <h3>{team.name}</h3>
             </div>
           ))
         ) : (
           <p>Carregando times...</p>
         )}
-        {isAuthTokenValid() && (
-          <div className="team-card add-team-card">
-            <h2>Adicionar Time</h2>
-            <p>Conhece um time que não está na lista? Adicione ele!</p>
-            <Button variant="contained" onClick={toggleModal}>
-              Adicionar Time
-            </Button>
-          </div>
-        )}
       </div>
 
+      {/* Modal de time selecionado */}
+      <Dialog open={openTeamModal} onClose={toggleTeamModal}>
+        {selectedTeam && (
+          <DialogContent
+
+            sx={{
+
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'left',
+              justifyContent: 'center',
+              gap: '1rem',
+
+            }}
+
+          >
+            <h2>{selectedTeam.name}</h2>
+            <p><strong>Cidade:</strong> {selectedTeam.city}</p>
+            <p><strong>Fundação:</strong> {selectedTeam.foundation_date}</p>
+            <p><strong>Títulos:</strong> {selectedTeam.championships_won}</p>
+            <p><strong>Treinador:</strong> {selectedTeam.coach_name}</p>
+            <p><strong>Jogadores:</strong> {selectedTeam.players_count}</p>
+            <p><strong>Ativo:</strong> {selectedTeam.is_active ? 'Sim' : 'Não'}</p>
+
+          </DialogContent>
+        )}
+      </Dialog>
+
+      {isAuthTokenValid() && (
+        <div className="team-card add-team-card">
+          <h2>Adicionar Time</h2>
+          <p>Conhece um time que não está na lista? Adicione ele!</p>
+          <Button variant="contained" onClick={toggleModal}>
+            Adicionar Time
+          </Button>
+        </div>
+      )}
+
+      {/* Modal de adicionar time */}
       <Dialog open={openModal} onClose={toggleModal}>
         <DialogContent>
           <h2>Adicionar Time</h2>
