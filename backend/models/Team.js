@@ -13,9 +13,9 @@ Team.init(
     },
     name: {
         type: DataTypes.STRING,
-        allowNull: false, // Campo obrigatório
+        allowNull: false, 
         unique: {
-          msg: 'Já existe um time com esse nome.' // Mensagem de erro para nome duplicado
+          msg: 'Já existe um time com esse nome.' 
         },
         validate: {
           notEmpty: { msg: 'O nome do time é obrigatório.' },

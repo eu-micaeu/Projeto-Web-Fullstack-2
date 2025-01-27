@@ -2,11 +2,12 @@ const express = require('express');
 const teamController = require('../controllers/teamController');
 const router = express.Router();
 const authenticate = require('../middlewares/authenticate');
+const cachingStrategy = require('../middlewares/cachingStrategy'); 
 
-router.post('/createTeam', authenticate, teamController.createTeam); // Rotas para criar um time
+router.post('/createTeam', authenticate, teamController.createTeam);
 
-router.get('/readTeams' , teamController.readTeams); // Rota para ler todos os times
+router.get('/readTeams', cachingStrategy, teamController.readTeams);
 
-router.get('/readTeamByName/:name', authenticate, teamController.readTeamByName); // Rota para ler um time pelo nome
+router.get('/readTeamByName/:name', authenticate, cachingStrategy, teamController.readTeamByName);
 
 module.exports = router;
