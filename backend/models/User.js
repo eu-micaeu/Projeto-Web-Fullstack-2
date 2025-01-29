@@ -39,7 +39,7 @@ User.init({
       validate: {
         notEmpty: { msg: 'A senha é obrigatória.' },
         len: {
-          args: [8, 20], 
+          args: [8], 
           msg: 'A senha deve ter pelo menos 8 caracteres.'
         }
       }
