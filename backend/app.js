@@ -1,12 +1,18 @@
 const express = require('express');
+
 const userRoutes = require('./routes/userRoutes');
+
 const teamRoutes = require('./routes/teamRoutes');
+
 const installRoutes = require('./routes/installRoutes');
+
 const dotenv = require('dotenv');
+
 const cors = require('cors');
+
 const compression = require('compression');
 
-dotenv.config();
+dotenv.config(); // Configura as variáveis de ambiente
 
 const app = express(); // Inicializa o servidor
 

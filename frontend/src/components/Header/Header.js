@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "./Header.css";
 import { Dialog } from "@mui/material";
-
 import { isAuthTokenValid, removeAuthTokenFromCookies } from '../../utils/cookies';
 import Cookies from 'js-cookie';
+
+require('./Header.css');
 
 const Header = () => {
   const [openLogin, setOpenLogin] = useState(false);
@@ -132,6 +132,9 @@ const Header = () => {
             className="switch-button"
             onClick={() => {
               setOpenLogin(false);
+              setError('');
+              setUsername('');
+              setPassword('');
               setOpenRegister(true);
             }}
           >

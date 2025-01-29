@@ -126,7 +126,7 @@ header nav ul li button {
 .login-dialog .MuiPaper-root,
 .register-dialog .MuiPaper-root {
   width: 400px;
-  height: 475px;
+  height: 550px;
   max-width: 90%;
   overflow: hidden;
   border-radius: 10px;

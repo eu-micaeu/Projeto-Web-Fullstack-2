@@ -198,11 +198,11 @@ function Main() {
       </Dialog>
 
       {isAuthTokenValid() && (
-        <div className="team-card add-team-card">
+        <div className="add-team-card">
           <h2>Adicionar Time</h2>
           <p>Conhece um time que não está na lista? Adicione ele!</p>
-          <Button variant="contained" onClick={toggleModal}>
-            Adicionar Time
+          <Button variant="contained" onClick={toggleModal} className='submit-button'>
+            Adicionar
           </Button>
         </div>
       )}

@@ -3,7 +3,7 @@ main {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    background-color: #f8f9fa;
+    background-color: #f0f0f0;
     border-radius: 8px;
     padding: 20px 0;
 }
@@ -46,6 +46,8 @@ p {
 .error {
     color: red;
     font-weight: bold;
+    margin: 10px 0;
+    font-size: 14px;
 }
 
 .error-message {
@@ -61,35 +63,27 @@ p {
 .search-team-form {
     display: flex;
     justify-content: center;
-    padding: 20px;
     margin-bottom: 20px;
     background: #f9f9f9;
     border-radius: 10px;
 }
 
-.search-team-form form {
+.search-team-form form{
+
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 15px;
-    width: 100%;
-    max-width: 600px;
-    height: 60px;
+    background-color: transparent;
+
 }
 
-.search-team-form label {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #333;
-}
-
-.search-team-form input {
+.search-team-form form .MuiFormControl-root {
     flex: 1;
-    padding: 15px 15px;
     font-size: 1rem;
     border: 1px solid #ddd;
     border-radius: 5px;
     transition: border-color 0.3s, box-shadow 0.3s;
-    height: 100%;
+    margin: 0;
 }
 
 .search-team-form input:focus {
@@ -106,6 +100,8 @@ p {
     border-radius: 5px;
     transition: background-color 0.3s, transform 0.2s;
     cursor: pointer;
+    height: 100%;
+
 
 }
 
@@ -166,6 +162,23 @@ p {
 .team-card p {
     margin: 5px 0;
     font-size: 1em;
+}
+
+.add-team-card {
+    padding: 12px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 80vw;
+}
+
+.add-team-card .submit-button {
+    padding: 10px 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 10vw;
+    background-color:#F24822;
 }
 
 .MuiPaper-root {

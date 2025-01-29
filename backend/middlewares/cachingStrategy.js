@@ -34,8 +34,6 @@ const cachingStrategy = async (req, res, next) => {
 
     }
 
-    console.log(`Cache miss ❌ para ${cacheKey}`);
-
     const originalJson = res.json.bind(res);
 
     res.json = async (body) => {
