@@ -17,11 +17,7 @@ exports.registerUser = [
       
       const { username, password } = req.body;
 
-      console.log(username, password);
-
       const hashedPassword = await bcrypt.hash(password, 10);
-
-      console.log(hashedPassword);
 
       const user = await User.create({ username, password: hashedPassword });
 

@@ -7,7 +7,7 @@ exports.readTeams = async (req, res) => {
 
     const teams = await Team.findAll();
 
-    res.status(200).json({ teams });
+    res.status(200).json({ teams, message: 'Times listados com sucesso' });
 
   } catch (error) {
 
@@ -32,7 +32,7 @@ exports.readTeamByName = async (req, res) => {
 
     }
 
-    res.status(200).json({ team });
+    res.status(200).json({ team, message: 'Time encontrado com sucesso' });
 
   } catch (error) {
 
