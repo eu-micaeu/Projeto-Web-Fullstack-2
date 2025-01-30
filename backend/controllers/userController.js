@@ -6,34 +6,12 @@ const dotenv = require('dotenv');
 
 const bcrypt = require('bcryptjs');
 
-const { check, validationResult } = require('express-validator');
-
 dotenv.config();
 
 // Função para registrar um usuário
 exports.registerUser = [
 
-  check('username')
-
-    .isAlphanumeric().withMessage('Nome de usuário inválido')
-
-    .notEmpty().withMessage('O nome do username é obrigatório'),
-
-  check('password')
-
-    .isLength({ min: 8 }).withMessage('A senha deve ter pelo menos 8 caracteres')
-
-    .notEmpty().withMessage('A senha é obrigatória'),
-
   async (req, res) => {
-
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-
-      return res.status(400).json({ errors: errors.array() });
-
-    }
 
     try {
       
@@ -72,27 +50,7 @@ exports.registerUser = [
 // Função para um usuário fazer login
 exports.loginUser = [
 
-  check('username')
-
-    .isAlphanumeric().withMessage('Nome de usuário inválido')
-
-    .notEmpty().withMessage('O nome do username é obrigatório'),
-
-  check('password')
-
-    .isLength({ min: 8 }).withMessage('A senha deve ter pelo menos 8 caracteres')
-
-    .notEmpty().withMessage('A senha é obrigatória'),
-
   async (req, res) => {
-
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-
-      return res.status(400).json({ errors: errors.array() });
-
-    }
 
     const { username, password } = req.body;
 
