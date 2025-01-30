@@ -59,50 +59,29 @@ p {
     font-weight: bold;
 }
 
-
 .search-team-form {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-bottom: 20px;
     background: #f9f9f9;
     border-radius: 10px;
+    padding: 10px;
+    width: 80%;
 }
 
-.search-team-form form{
-
+.search-team-form form {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-
-}
-
-.search-team-form form .MuiFormControl-root {
-    flex: 1;
-    font-size: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    transition: border-color 0.3s, box-shadow 0.3s;
-    margin: 0;
-}
-
-.search-team-form input:focus {
-    border-color: #4caf50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.4);
-    outline: none;
+    gap: 10px;
+    width: 100%;
 }
 
 .search-team-form .submit-button {
-    padding: 12px 20px;
-    font-weight: bold;
     background-color: #F24822 !important;
     color: #fff;
     border-radius: 5px;
+    width: 10%;
     transition: background-color 0.3s, transform 0.2s;
-    cursor: pointer;
-    height: 100%;
-
-
 }
 
 .search-team-form .submit-button:hover {
@@ -146,22 +125,32 @@ p {
     transform: translateY(-5px);
 }
 
-.team-logo {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    margin-bottom: 10px;
-    border-radius: 50%;
+.team-card {
+    border-radius: 10px;
+    border: 2px solid #F24822;
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .team-card h2 {
     font-size: 1.5em;
     margin: 10px 0;
+    color: #333;
 }
 
 .team-card p {
     margin: 5px 0;
     font-size: 1em;
+    color: #666;
 }
 
 .add-team-card {
@@ -172,13 +161,27 @@ p {
     width: 80vw;
 }
 
+.submit-button{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.MuiButton-icon{
+
+    margin: 0 !important;
+
+}
+
 .add-team-card .submit-button {
-    padding: 10px 10px;
+    padding: 10px;
     font-weight: bold;
     border-radius: 5px;
     transition: background-color 0.3s, transform 0.2s;
     width: 10vw;
-    background-color:#F24822;
+    background-color: #F24822;
 }
 
 .MuiPaper-root {
@@ -187,16 +190,29 @@ p {
 }
 
 .MuiDialogContent-root {
-    padding: 0px 20px 20px 20px;
+    padding: 20px;
     border: 2px solid #F24822;
+    border-radius: 8px;
+    background-color: #fff;
 }
 
-.MuiDialogContent-root p{
-
+.MuiDialogContent-root p {
     font-size: 1.2rem;
-    border: 2px solid #F24822;
-    padding: 10px 7px;
-    margin: 0;
+    padding: 10px;
+    margin: 10px 0;
     border-radius: 5px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+}
 
+/* Adiciona espaçamento entre ícone e texto */
+.MuiButton-startIcon {
+    margin-right: 8px;
+}
+
+/* Estilo para botões com ícones */
+.button-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }

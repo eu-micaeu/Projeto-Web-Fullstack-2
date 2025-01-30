@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
 import './Main.css';
 import { isAuthTokenValid } from '../../utils/cookies';
-import { fetchTeams, fetchTeamByName, addTeam } from '../../utils/api';
+import { fetchTeams, fetchTeamByName, addTeam, deleteTeam, updateTeam } from '../../utils/api';
 import { Button, Dialog, DialogContent, DialogActions, TextField, MenuItem } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
 
 function Main() {
   const [teams, setTeams] = useState([]);
@@ -11,7 +15,9 @@ function Main() {
   const [searchedTeam, setSearchedTeam] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [openTeamModal, setOpenTeamModal] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(null);
+  const [teamToEdit, setTeamToEdit] = useState(null);
   const [newTeam, setNewTeam] = useState({
     name: '',
     city: '',
@@ -74,6 +80,37 @@ function Main() {
     toggleTeamModal();
   };
 
+  const handleDeleteTeam = async (teamId) => {
+    try {
+      await deleteTeam(teamId);
+      const updatedTeams = teams.filter(team => team.team_id !== teamId);
+      setTeams(updatedTeams);
+      setOpenTeamModal(false);
+      setSearchedTeam(null);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const handleUpdateTeam = async () => {
+    try {
+      const updatedTeam = await updateTeam(teamToEdit.team_id, teamToEdit);
+      const updatedTeams = teams.map(team =>
+        team.team_id === updatedTeam.team_id ? updatedTeam : team
+      );
+      setTeams(updatedTeams);
+      setEditModalOpen(false);
+      if (selectedTeam && selectedTeam.team_id === updatedTeam.team_id) {
+        setSelectedTeam(updatedTeam);
+      }
+      if (searchedTeam && searchedTeam.team_id === updatedTeam.team_id) {
+        setSearchedTeam(updatedTeam);
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   const renderTeamCard = (team) => (
     <div key={team.team_id} className="team-card" onClick={() => handleTeamClick(team)}>
       <h3>{team.name}</h3>
@@ -89,6 +126,29 @@ function Main() {
       <p><strong>Treinador:</strong> {team.coach_name}</p>
       <p><strong>Jogadores:</strong> {team.players_count}</p>
       <p><strong>Ativo:</strong> {team.is_active ? 'Sim' : 'Não'}</p>
+      {isAuthTokenValid() && (
+        <div style={{ display: 'flex', marginTop: '20px', justifyContent: 'space-between' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<EditIcon />}
+            onClick={() => {
+              setTeamToEdit(team);
+              setEditModalOpen(true);
+            }}
+          >
+            Editar
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            startIcon={<DeleteIcon />}
+            onClick={() => handleDeleteTeam(team.team_id)}
+          >
+            Deletar
+          </Button>
+        </div>
+      )}
     </>
   );
 
@@ -135,6 +195,49 @@ function Main() {
     </>
   );
 
+  const renderEditForm = () => (
+    <>
+      {['name', 'city', 'championships_won', 'coach_name', 'players_count'].map((field) => (
+        <TextField
+          key={field}
+          id={field}
+          label={field.replace('_', ' ')}
+          variant="outlined"
+          fullWidth
+          margin="dense"
+          name={field}
+          value={teamToEdit[field]}
+          onChange={(e) => setTeamToEdit({ ...teamToEdit, [field]: e.target.value })}
+        />
+      ))}
+      <TextField
+        id="foundation_date"
+        label="Data de Fundação"
+        type="date"
+        variant="outlined"
+        fullWidth
+        margin="dense"
+        name="foundation_date"
+        value={teamToEdit.foundation_date}
+        onChange={(e) => setTeamToEdit({ ...teamToEdit, foundation_date: e.target.value })}
+        InputLabelProps={{ shrink: true }}
+      />
+      <TextField
+        id="is_active"
+        label="Ativo"
+        select
+        fullWidth
+        margin="dense"
+        name="is_active"
+        value={teamToEdit.is_active}
+        onChange={(e) => setTeamToEdit({ ...teamToEdit, is_active: e.target.value === 'true' })}
+      >
+        <MenuItem value={true}>Sim</MenuItem>
+        <MenuItem value={false}>Não</MenuItem>
+      </TextField>
+    </>
+  );
+
   return (
     <main>
       <h2>Times Históricos do Basquete!</h2>
@@ -153,8 +256,12 @@ function Main() {
               fullWidth
               margin="normal"
             />
-            <Button variant="contained" type="submit" className="submit-button">
-              Buscar
+            <Button
+              variant="contained"
+              type="submit"
+              className="submit-button"
+              startIcon={<SearchIcon style={{ fontSize: 30 }} />} // Ícone maior
+            >
             </Button>
           </form>
         </div>
@@ -165,7 +272,9 @@ function Main() {
       {searchedTeam && (
         <div className="searched-team">
           <h3>Time Encontrado:</h3>
-          <div className="team-card">{renderTeamDetails(searchedTeam)}</div>
+          <div className="team-card">
+            {renderTeamDetails(searchedTeam)}
+          </div>
         </div>
       )}
 
@@ -178,11 +287,31 @@ function Main() {
         {selectedTeam && <DialogContent sx={{ gap: '1rem' }}>{renderTeamDetails(selectedTeam)}</DialogContent>}
       </Dialog>
 
+      <Dialog open={editModalOpen} onClose={() => setEditModalOpen(false)}>
+        <DialogContent>
+          <h2>Editar Time</h2>
+          {teamToEdit && renderEditForm()}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setEditModalOpen(false)} color="error">
+            Fechar
+          </Button>
+          <Button onClick={handleUpdateTeam} variant="contained" color="primary">
+            Salvar Alterações
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       {isAuthTokenValid() && (
         <div className="add-team-card">
           <h2>Adicionar Time</h2>
           <p>Conhece um time que não está na lista? Adicione ele!</p>
-          <Button variant="contained" onClick={toggleModal} className="submit-button">
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={toggleModal}
+            className="submit-button"
+          >
             Adicionar
           </Button>
         </div>
