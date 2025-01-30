@@ -12,7 +12,7 @@ const Header = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
+  const API_BASE_URL = "https://localhost:443";
 
   const handleLogin = async (e) => {
     e.preventDefault();

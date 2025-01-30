@@ -1,14 +1,8 @@
 import { useEffect, useState } from 'react';
 import './Main.css';
-import { isAuthTokenValid, getAuthTokenFromCookies } from '../../utils/cookies';
-
-// Importação MUI
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
+import { isAuthTokenValid } from '../../utils/cookies';
+import { fetchTeams, fetchTeamByName, addTeam } from '../../utils/api';
+import { Button, Dialog, DialogContent, DialogActions, TextField, MenuItem } from '@mui/material';
 
 function Main() {
   const [teams, setTeams] = useState([]);
@@ -29,51 +23,32 @@ function Main() {
   });
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/teams/readTeams')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Erro ao buscar os times');
-        }
-        return response.json();
-      })
-      .then(data => setTeams(data.teams))
-      .catch(error => setError(error.message));
+    const loadTeams = async () => {
+      try {
+        const teamsData = await fetchTeams();
+        setTeams(teamsData);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+    loadTeams();
   }, []);
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
     setError(null);
+    if (!searchName.trim()) return setSearchedTeam(null);
 
-    if (!searchName.trim()) {
-      setSearchedTeam(null); 
-      return; 
+    try {
+      const teamData = await fetchTeamByName(searchName);
+      setSearchedTeam(teamData);
+    } catch (error) {
+      setSearchedTeam(null);
+      setError(error.message);
     }
-
-    const token = getAuthTokenFromCookies();
-    fetch(`http://localhost:3000/api/teams/readTeamByName/${searchName}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Time não encontrado');
-        }
-        return response.json();
-      })
-      .then(data => {
-        setSearchedTeam(data.team);
-        setError(null);
-      })
-      .catch(error => {
-        setSearchedTeam(null);
-        setError(error.message);
-      });
   };
 
   const toggleModal = () => setOpenModal(!openModal);
-
   const toggleTeamModal = () => setOpenTeamModal(!openTeamModal);
 
   const handleInputChange = (e) => {
@@ -81,29 +56,17 @@ function Main() {
     setNewTeam({ ...newTeam, [name]: value });
   };
 
-  const handleAddTeam = (e) => {
+  const handleAddTeam = async (e) => {
     e.preventDefault();
     setError(null);
-    const token = getAuthTokenFromCookies();
-    fetch('http://localhost:3000/api/teams/createTeam', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(newTeam),
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Erro ao adicionar o time');
-        }
-        return response.json();
-      })
-      .then(data => {
-        setTeams([...teams, data.team]);
-        toggleModal();
-      })
-      .catch(error => setError(error.message));
+
+    try {
+      const addedTeam = await addTeam(newTeam);
+      setTeams([...teams, addedTeam]);
+      toggleModal();
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   const handleTeamClick = (team) => {
@@ -111,13 +74,72 @@ function Main() {
     toggleTeamModal();
   };
 
+  const renderTeamCard = (team) => (
+    <div key={team.team_id} className="team-card" onClick={() => handleTeamClick(team)}>
+      <h3>{team.name}</h3>
+    </div>
+  );
+
+  const renderTeamDetails = (team) => (
+    <>
+      <h2>{team.name}</h2>
+      <p><strong>Cidade:</strong> {team.city}</p>
+      <p><strong>Fundação:</strong> {team.foundation_date}</p>
+      <p><strong>Títulos:</strong> {team.championships_won}</p>
+      <p><strong>Treinador:</strong> {team.coach_name}</p>
+      <p><strong>Jogadores:</strong> {team.players_count}</p>
+      <p><strong>Ativo:</strong> {team.is_active ? 'Sim' : 'Não'}</p>
+    </>
+  );
+
+  const renderFormFields = () => (
+    <>
+      {['name', 'city', 'championships_won', 'coach_name', 'players_count'].map((field) => (
+        <TextField
+          key={field}
+          id={field}
+          label={field.replace('_', ' ')}
+          variant="outlined"
+          fullWidth
+          margin="dense"
+          name={field}
+          value={newTeam[field]}
+          onChange={handleInputChange}
+        />
+      ))}
+      <TextField
+        id="foundation_date"
+        label="Data de Fundação"
+        type="date"
+        variant="outlined"
+        fullWidth
+        margin="dense"
+        name="foundation_date"
+        value={newTeam.foundation_date}
+        onChange={handleInputChange}
+        InputLabelProps={{ shrink: true }}
+      />
+      <TextField
+        id="is_active"
+        label="Ativo"
+        select
+        fullWidth
+        margin="dense"
+        name="is_active"
+        value={newTeam.is_active}
+        onChange={handleInputChange}
+      >
+        <MenuItem value={true}>Sim</MenuItem>
+        <MenuItem value={false}>Não</MenuItem>
+      </TextField>
+    </>
+  );
+
   return (
     <main>
       <h2>Times Históricos do Basquete!</h2>
 
-      {!isAuthTokenValid() && (
-        <p>Conhece mais algum? Faça o Login no nosso site e adicione ele!</p>
-      )}
+      {!isAuthTokenValid() && <p>Conhece mais algum? Faça o Login no nosso site e adicione ele!</p>}
 
       {isAuthTokenValid() && (
         <div className="search-team-form">
@@ -131,7 +153,7 @@ function Main() {
               fullWidth
               margin="normal"
             />
-            <Button variant="contained" type="submit" className='submit-button'>
+            <Button variant="contained" type="submit" className="submit-button">
               Buscar
             </Button>
           </form>
@@ -143,122 +165,37 @@ function Main() {
       {searchedTeam && (
         <div className="searched-team">
           <h3>Time Encontrado:</h3>
-          <div className="team-card">
-            <h2>{searchedTeam.name}</h2>
-            <p><strong>Cidade:</strong> {searchedTeam.city}</p>
-            <p><strong>Fundação:</strong> {searchedTeam.foundation_date}</p>
-            <p><strong>Campeonatos Ganhos:</strong> {searchedTeam.championships_won}</p>
-            <p><strong>Treinador:</strong> {searchedTeam.coach_name}</p>
-            <p><strong>Número de Jogadores:</strong> {searchedTeam.players_count}</p>
-            <p><strong>Ativo:</strong> {searchedTeam.is_active ? 'Sim' : 'Não'}</p>
-          </div>
+          <div className="team-card">{renderTeamDetails(searchedTeam)}</div>
         </div>
       )}
 
       <h2 className="titule">Lista de todos os times:</h2>
-
       <div className="teams-container">
-        {teams.length > 0 ? (
-          teams.map((team) => (
-            <div key={team.team_id} className="team-card" onClick={() => handleTeamClick(team)}>
-              <h3>{team.name}</h3>
-            </div>
-          ))
-        ) : (
-          <p>Carregando times...</p>
-        )}
+        {teams.length > 0 ? teams.map(renderTeamCard) : <p>Carregando times...</p>}
       </div>
 
-      {/* Modal de time selecionado */}
       <Dialog open={openTeamModal} onClose={toggleTeamModal}>
-        {selectedTeam && (
-          <DialogContent
-
-            sx={{
-
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'left',
-              justifyContent: 'center',
-              gap: '1rem',
-
-            }}
-
-          >
-            <h2>{selectedTeam.name}</h2>
-            <p><strong>Cidade:</strong> {selectedTeam.city}</p>
-            <p><strong>Fundação:</strong> {selectedTeam.foundation_date}</p>
-            <p><strong>Títulos:</strong> {selectedTeam.championships_won}</p>
-            <p><strong>Treinador:</strong> {selectedTeam.coach_name}</p>
-            <p><strong>Jogadores:</strong> {selectedTeam.players_count}</p>
-            <p><strong>Ativo:</strong> {selectedTeam.is_active ? 'Sim' : 'Não'}</p>
-
-          </DialogContent>
-        )}
+        {selectedTeam && <DialogContent sx={{ gap: '1rem' }}>{renderTeamDetails(selectedTeam)}</DialogContent>}
       </Dialog>
 
       {isAuthTokenValid() && (
         <div className="add-team-card">
           <h2>Adicionar Time</h2>
           <p>Conhece um time que não está na lista? Adicione ele!</p>
-          <Button variant="contained" onClick={toggleModal} className='submit-button'>
+          <Button variant="contained" onClick={toggleModal} className="submit-button">
             Adicionar
           </Button>
         </div>
       )}
 
-      {/* Modal de adicionar time */}
       <Dialog open={openModal} onClose={toggleModal}>
         <DialogContent>
           <h2>Adicionar Time</h2>
-          <form onSubmit={handleAddTeam}>
-            {['name', 'city', 'championships_won', 'coach_name', 'players_count'].map((field) => (
-              <TextField
-                key={field}
-                id={field}
-                label={field.replace('_', ' ')}
-                variant="outlined"
-                fullWidth
-                margin="dense"
-                name={field}
-                value={newTeam[field]}
-                onChange={handleInputChange}
-              />
-            ))}
-            <TextField
-              id="foundation_date"
-              label="Data de Fundação"
-              type="date"
-              variant="outlined"
-              fullWidth
-              margin="dense"
-              name="foundation_date"
-              value={newTeam.foundation_date}
-              onChange={handleInputChange}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <TextField
-              id="is_active"
-              label="Ativo"
-              select
-              fullWidth
-              margin="dense"
-              name="is_active"
-              value={newTeam.is_active}
-              onChange={handleInputChange}
-            >
-              <MenuItem value={true}>Sim</MenuItem>
-              <MenuItem value={false}>Não</MenuItem>
-            </TextField>
-          </form>
+          <form onSubmit={handleAddTeam}>{renderFormFields()}</form>
         </DialogContent>
         <DialogActions>
           <Button onClick={toggleModal} color="error">Fechar</Button>
-          <Button onClick={handleAddTeam} variant="contained">
-            Adicionar
-          </Button>
+          <Button onClick={handleAddTeam} variant="contained">Adicionar</Button>
         </DialogActions>
       </Dialog>
     </main>

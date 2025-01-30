@@ -1,24 +1,20 @@
 const express = require('express');
-
+const https = require('https'); // Importa o módulo HTTPS
+const fs = require('fs'); // Importa o módulo de sistema de arquivos
 const userRoutes = require('./routes/userRoutes');
-
 const teamRoutes = require('./routes/teamRoutes');
-
 const installRoutes = require('./routes/installRoutes');
-
 const dotenv = require('dotenv');
-
 const cors = require('cors');
-
 const compression = require('compression');
 
-dotenv.config(); // Configura as variáveis de ambiente
+dotenv.config(); // Carrega variáveis de ambiente
 
 const app = express(); // Inicializa o servidor
 
 app.use(cors({
 
-    origin: 'http://localhost:3001',
+    origin: 'https://localhost:3000',
 
     credentials: true
 
@@ -34,6 +30,19 @@ app.use('/api/teams', teamRoutes); // Rota para times
 
 app.use('/api', installRoutes); // Rota para instalação
 
-const PORT = process.env.PORT; // Porta do servidor
+const sslOptions = {
 
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`)); // Inicia o servidor
+    key: fs.readFileSync('./ssl/localhost.key'), // Caminho para o arquivo da chave privada
+
+    cert: fs.readFileSync('./ssl/localhost.crt'), // Caminho para o arquivo do certificado
+
+};
+
+const PORT = process.env.PORT;
+
+// Inicializa o servidor HTTPS
+https.createServer(sslOptions, app).listen(PORT, () => {
+
+    console.log(`Servidor rodando com SSL na porta ${PORT}`);
+
+});
