@@ -1,81 +1,56 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
-const bcrypt = require('bcryptjs');
-const { body, validationResult } = require('express-validator');
-const xss = require('xss');
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
+class User extends Model { }
 
-dotenv.config();
+// Modelo de usuário
+User.init(
+  {
 
-// Função para escapar dados de saída
-const escapeOutput = (data) => {
-  return xss(data);
-};
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
 
-// Função para registrar um usuário
-exports.registerUser = [
-  body('username')
-    .trim()
-    .escape()
-    .isLength({ min: 3, max: 30 })
-    .withMessage('O username deve ter entre 3 e 30 caracteres'),
-  body('password')
-    .trim()
-    .isLength({ min: 8 })
-    .withMessage('A senha deve ter pelo menos 8 caracteres'),
-
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    try {
-      const { username, password } = req.body;
-
-      // Cria o usuário (as validações do Sequelize serão aplicadas aqui)
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await User.create({ username, password: hashedPassword });
-
-      res.status(201).json({
-        user: {
-          username: escapeOutput(user.username), // Escapa o username na resposta
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: { msg: 'Nome de usuário já cadastrado.' },
+      validate: {
+        notEmpty: { msg: 'O campo nome de usuário não pode ser vazio.' },
+        is: {
+          args: /^[a-zA-Z0-9_]+$/,
+          msg: 'O nome de usuário só pode conter letras, números e underscores.'
         },
-        message: 'Usuário criado com sucesso',
-      });
-    } catch (error) {
-      // Captura erros do Sequelize (por exemplo, username duplicado)
-      res.status(400).json({ error: error.message });
-    }
-  },
-];
-
-// Função para um usuário fazer login
-exports.loginUser = [
-  async (req, res) => {
-    const { username, password } = req.body;
-
-    try {
-      const user = await User.findOne({ where: { username } });
-
-      if (!user) {
-        return res.status(401).json({ error: 'Credenciais inválidas' });
+        isLength: {
+          args: [5],
+          msg: 'O nome deve ter mais de 5 caracteres.'
+        },
       }
+    },
 
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-
-      if (!isPasswordValid) {
-        return res.status(401).json({ error: 'Credenciais inválidas' });
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: { msg: 'O campo senha de usuário não pode ser vazio.' },
+        is: {
+          args: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])[0-9a-zA-Z\W_]{8,}$/,
+          msg: 'A senha deve conter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial.'
+        },
+        isLength: {
+          args: [8],
+          msg: 'A senha deve ter mais de 8 caracteres.'
+        },
       }
+    },
 
-      const token = jwt.sign({ user_id: user.user_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-      res.json({
-        token,
-        message: 'Login efetuado com sucesso',
-      });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
   },
-];
+  {
+    sequelize,
+    modelName: 'user',
+    timestamps: false
+  }
+);
+
+module.exports = User;

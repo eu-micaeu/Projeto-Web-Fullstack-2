@@ -3,7 +3,6 @@ const https = require('https'); // Importa o módulo HTTPS
 const fs = require('fs'); // Importa o módulo de sistema de arquivos
 const userRoutes = require('./routes/userRoutes');
 const teamRoutes = require('./routes/teamRoutes');
-const installRoutes = require('./routes/installRoutes');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const compression = require('compression');
@@ -27,8 +26,6 @@ app.use(compression()); // Habilita a compressão de arquivos estáticos e respo
 app.use('/api/users', userRoutes); // Rota para usuários
 
 app.use('/api/teams', teamRoutes); // Rota para times
-
-app.use('/api', installRoutes); // Rota para instalação
 
 const sslOptions = {
 
