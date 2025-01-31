@@ -83,7 +83,7 @@ function Main() {
   const handleDeleteTeam = async (teamId) => {
     try {
       await deleteTeam(teamId);
-      const updatedTeams = teams.filter(team => team.team_id !== teamId);
+      const updatedTeams = teams.filter(team => team.id !== teamId);
       setTeams(updatedTeams);
       setOpenTeamModal(false);
       setSearchedTeam(null);
@@ -94,16 +94,16 @@ function Main() {
 
   const handleUpdateTeam = async () => {
     try {
-      const updatedTeam = await updateTeam(teamToEdit.team_id, teamToEdit);
+      const updatedTeam = await updateTeam(teamToEdit.id, teamToEdit);
       const updatedTeams = teams.map(team =>
-        team.team_id === updatedTeam.team_id ? updatedTeam : team
+        team.id === updatedTeam.id ? updatedTeam : team
       );
       setTeams(updatedTeams);
       setEditModalOpen(false);
-      if (selectedTeam && selectedTeam.team_id === updatedTeam.team_id) {
+      if (selectedTeam && selectedTeam.id === updatedTeam.id) {
         setSelectedTeam(updatedTeam);
       }
-      if (searchedTeam && searchedTeam.team_id === updatedTeam.team_id) {
+      if (searchedTeam && searchedTeam.id === updatedTeam.id) {
         setSearchedTeam(updatedTeam);
       }
     } catch (error) {
@@ -112,7 +112,7 @@ function Main() {
   };
 
   const renderTeamCard = (team) => (
-    <div key={team.team_id} className="team-card" onClick={() => handleTeamClick(team)}>
+    <div key={team.id} className="team-card" onClick={() => handleTeamClick(team)}>
       <h3>{team.name}</h3>
     </div>
   );
@@ -143,7 +143,7 @@ function Main() {
             variant="contained"
             color="error"
             startIcon={<DeleteIcon />}
-            onClick={() => handleDeleteTeam(team.team_id)}
+            onClick={() => handleDeleteTeam(team.id)}
           >
             Deletar
           </Button>

@@ -17,7 +17,7 @@ const escapeOutput = (data) => {
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: ['user_id', 'username'], // Não retornar a senha
+      attributes: ['id', 'username'], // Não retornar a senha
     });
     res.status(200).json({ users });
   } catch (error) {
@@ -30,7 +30,7 @@ exports.getUserById = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findByPk(id, {
-      attributes: ['user_id', 'username'], // Não retornar a senha
+      attributes: ['id', 'username'], // Não retornar a senha
     });
     if (!user) {
       return res.status(404).json({ error: 'Usuário não encontrado' });
@@ -63,7 +63,7 @@ exports.createUser = [
       const user = await User.create({ username, password: hashedPassword });
       res.status(201).json({
         user: {
-          user_id: user.user_id,
+          id: user.id,
           username: escapeOutput(user.username), 
         },
         message: 'Usuário criado com sucesso',
@@ -104,7 +104,7 @@ exports.updateUser = [
       await user.save();
       res.status(200).json({
         user: {
-          user_id: user.user_id,
+          id: user.id,
           username: escapeOutput(user.username), 
         },
         message: 'Usuário atualizado com sucesso',
@@ -143,7 +143,7 @@ exports.loginUser = [
       if (!isPasswordValid) {
         return res.status(401).json({ error: 'Credenciais inválidas' });
       }
-      const token = jwt.sign({ user_id: user.user_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
       res.json({
         token,
         message: 'Login efetuado com sucesso',
