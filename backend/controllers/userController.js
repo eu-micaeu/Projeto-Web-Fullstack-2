@@ -137,10 +137,12 @@ exports.loginUser = [
     try {
       const user = await User.findOne({ where: { username } });
       if (!user) {
+        console.log(`Login falhou: usuário ${username} não encontrado`);
         return res.status(401).json({ error: 'Credenciais inválidas' });
       }
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
+        console.log(`Login falhou: senha inválida para o usuário ${username}`);
         return res.status(401).json({ error: 'Credenciais inválidas' });
       }
       const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
