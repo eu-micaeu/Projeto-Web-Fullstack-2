@@ -1,6 +1,7 @@
 const express = require('express');
 const https = require('https'); // Importa o módulo HTTPS
 const fs = require('fs'); // Importa o módulo de sistema de arquivos
+const installRoutes = require('./routes/installRoutes');
 const userRoutes = require('./routes/userRoutes');
 const teamRoutes = require('./routes/teamRoutes');
 const dotenv = require('dotenv');
@@ -22,6 +23,8 @@ app.use(cors({
 app.use(express.json()); // Permite o uso de JSON nas requisições
 
 app.use(compression()); // Habilita a compressão de arquivos estáticos e respostas HTTP
+
+app.use('/api', installRoutes); // Rota para instalação
 
 app.use('/api/users', userRoutes); // Rota para usuários
 
