@@ -11,11 +11,13 @@ const limiter = rateLimit({
   max: 5, 
 });
 
-router.get('/users', cachingStrategy, authenticate, userController.getAllUsers, limiter);
-router.get('/user/:id', cachingStrategy, authenticate, userController.getUserById, limiter);
-router.post('/register', userController.createUser, limiter);
-router.put('/user/:id', authenticate, userController.updateUser, limiter);
-router.delete('/user/:id', authenticate, userController.deleteUser, limiter);
-router.post('/login', userController.loginUser, limiter); // Rota para autenticação do usuário
+router.use(limiter);
+
+router.get('/', cachingStrategy, authenticate, userController.getAllUsers);
+router.get('/:id', cachingStrategy, authenticate, userController.getUserById);
+router.post('/', userController.createUser);
+router.put('/:id', authenticate, userController.updateUser);
+router.delete('/:id', authenticate, userController.deleteUser);
+router.post('/login', userController.loginUser);
 
 module.exports = router;

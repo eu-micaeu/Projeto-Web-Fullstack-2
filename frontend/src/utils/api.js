@@ -7,7 +7,7 @@ const API_BASE_URL = 'https://localhost:443/api/teams';
 // Função para buscar todos os times
 export const fetchTeams = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/readTeams`);
+    const response = await fetch(`${API_BASE_URL}`);
     if (!response.ok) {
       throw new Error('Erro ao buscar os times');
     }
@@ -22,7 +22,7 @@ export const fetchTeams = async () => {
 export const fetchTeamByName = async (name) => {
   try {
     const token = getAuthTokenFromCookies();
-    const response = await fetch(`${API_BASE_URL}/readTeamByName/${name}`, {
+    const response = await fetch(`${API_BASE_URL}/${name}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -42,7 +42,7 @@ export const fetchTeamByName = async (name) => {
 export const addTeam = async (teamData) => {
   try {
     const token = getAuthTokenFromCookies();
-    const response = await fetch(`${API_BASE_URL}/createTeam`, {
+    const response = await fetch(`${API_BASE_URL}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export const addTeam = async (teamData) => {
 export const updateTeam = async (teamId, teamData) => {
   try {
     const token = getAuthTokenFromCookies();
-    const response = await fetch(`${API_BASE_URL}/updateTeam/${teamId}`, {
+    const response = await fetch(`${API_BASE_URL}/${teamId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ export const updateTeam = async (teamId, teamData) => {
 export const deleteTeam = async (teamId) => {
   try {
     const token = getAuthTokenFromCookies();
-    const response = await fetch(`${API_BASE_URL}/deleteTeam/${teamId}`, {
+    const response = await fetch(`${API_BASE_URL}/${teamId}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,

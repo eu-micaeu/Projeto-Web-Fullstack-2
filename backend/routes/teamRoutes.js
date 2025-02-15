@@ -11,9 +11,12 @@ const limiter = rateLimit({
   max: 5, 
 });
 
-router.get('/readTeams', cachingStrategy, teamController.readTeams, limiter);
-router.get('/readTeamByName/:name', authenticate, cachingStrategy, teamController.readTeamByName, limiter);
-router.post('/createTeam', authenticate, teamController.createTeam, limiter);
-router.put('/updateTeam/:id', authenticate, teamController.updateTeam, limiter);
-router.delete('/deleteTeam/:id', authenticate, teamController.deleteTeam, limiter);
+router.use(limiter); 
+
+router.get('/', cachingStrategy, teamController.readTeams);
+router.get('/:name', authenticate, cachingStrategy, teamController.readTeamByName);
+router.post('/', authenticate, teamController.createTeam);
+router.put('/:id', authenticate, teamController.updateTeam);
+router.delete('/:id', authenticate, teamController.deleteTeam);
+
 module.exports = router;
