@@ -1,23 +1,36 @@
 const { createClient } = require("redis");
 const redisClient = createClient();
 
-// Conexão com o Redis
 redisClient.connect();
 
-// Tratamento de erros do Redis
 redisClient.on("error", (err) => {
   console.error("Erro no Redis:", err);
 });
 
-// Tempo de vida do cache em segundos
 const CACHE_TTL = 5;
 
-// Função de middleware para estratégia de cache
 const cachingStrategy = async (req, res, next) => {
   const cacheKey = req.originalUrl;
+  const cacheGroupKeyTeams = '/api/teams/*'; // Padrão de chave para o grupo de times
+  const cacheGroupKeyUsers = '/api/users/*'; // Padrão de chave para o grupo de usuários
+
+
   try {
     if (["POST", "PUT", "DELETE"].includes(req.method)) {
+
+      // Invalida o cache para a chave específica
       await redisClient.del(cacheKey);
+
+      // Invalida o cache para todas as chaves que correspondem ao padrão do grupo
+      const keys = await redisClient.keys(cacheGroupKeyTeams);
+      if (keys.length > 0) {
+        await redisClient.del(keys);
+      }
+      const keysUsers = await redisClient.keys(cacheGroupKeyUsers);
+      if (keysUsers.length > 0) {
+        await redisClient.del(keysUsers);
+      }
+
       return next();
     }
     const cached = await redisClient.get(cacheKey);
